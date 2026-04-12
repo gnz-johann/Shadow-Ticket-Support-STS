@@ -1,0 +1,8 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Le decimos al cuerpo de la página que use nuestro color beige y fuente Nunito por defecto */
+body {
+  @apply bg-beige font-body text-moss;
+}
