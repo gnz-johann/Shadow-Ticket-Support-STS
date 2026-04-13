@@ -6,6 +6,7 @@ import TecnicoDashboard from './pages/dashboard/TecnicoDashboard';
 import MisTickets from './pages/dashboard/MisTickets';
 import HistorialTecnico from './pages/dashboard/HistorialTecnico';
 import GestionPersonal from './pages/dashboard/GestionPersonal';
+import HistorialCliente from './pages/dashboard/HistorialCliente';
 // (Asegúrate de tener también importado MisTickets si ya lo pusiste en las rutas)
 // Un componente temporal muy sencillo para nuestro Dashboard
 
@@ -27,9 +28,11 @@ function App() {
           <Route path="historial" element={<HistorialTecnico />} />
            {/* ESTE MUESTRA MUESTRA DONDE LOS ADMINISTRADORES DARÁN DE ALTA A TÉCNICOS */}
           <Route path="personal" element={<GestionPersonal />} />
+          {/* ESTE MUESTRA EL HISTORIAL COMPLETO PARA CLIENTES */}
+          <Route path="historial-cliente" element={<HistorialCliente />} />
+          
         </Route>
 
-        
       </Routes>
     </Router>
   );

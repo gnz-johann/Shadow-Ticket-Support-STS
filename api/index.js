@@ -89,17 +89,17 @@ app.get('/api/tickets/disponibles', async (req, res) => {
 });
 
 // ==========================================
-// RUTA: TOMAR UN TICKET (Asignación)
+// RUTA: TOMAR UN TICKET (Asignación) CORREGIDA
 // ==========================================
 app.put('/api/tickets/tomar/:id', async (req, res) => {
-  const { id } = req.params; // El ID del ticket
-  const { id_tecnico, prioridad } = req.body; // El ID del técnico que lo toma
+  const { id } = req.params; 
+  const { id_tecnico, prioridad } = req.body; 
 
   try {
     const consulta = `
       UPDATE Ticket 
-      SET id_tecnico = $1, estado = 'En Proceso' 
-      WHERE id_ticket = $2
+      SET id_tecnico = $1, prioridad = $2, estado = 'En Proceso' 
+      WHERE id_ticket = $3
       RETURNING *;
     `;
     const resultado = await pool.query(consulta, [id_tecnico, prioridad, id]);
@@ -169,15 +169,13 @@ app.put('/api/tickets/resolver/:id', async (req, res) => {
 // RUTA: CREAR NUEVO TICKET (Cliente)
 // ==========================================
 app.post('/api/tickets', async (req, res) => {
-  // Recibimos los datos desde React
   const { id_cliente, titulo, descripcion } = req.body;
 
   try {
-    // Insertamos el ticket. 
-    // Nota: El estado inicial es 'Abierto' y la fecha se pone sola.
+    // ⚠️ LA CORRECCIÓN: Inyectamos 'Pendiente' directamente en la columna prioridad
     const consulta = `
-      INSERT INTO Ticket (id_cliente, titulo, descripcion, estado, fecha_apertura) 
-      VALUES ($1, $2, $3, 'Abierto', CURRENT_TIMESTAMP)
+      INSERT INTO Ticket (id_cliente, titulo, descripcion, estado, prioridad, fecha_apertura) 
+      VALUES ($1, $2, $3, 'Abierto', 'Pendiente', CURRENT_TIMESTAMP)
       RETURNING *;
     `;
     
@@ -188,7 +186,8 @@ app.post('/api/tickets', async (req, res) => {
       ticket: resultado.rows[0] 
     });
   } catch (error) {
-    console.error('Error al crear el ticket:', error);
+    // 💡 Esto es lo que imprime el error real en tu consola de VS Code
+    console.error('Error FATAL al insertar el ticket en PostgreSQL:', error);
     res.status(500).json({ mensaje: 'Error interno al guardar el ticket' });
   }
 });
@@ -201,10 +200,12 @@ app.get('/api/tickets/cliente/:id_cliente', async (req, res) => {
   
   try {
     // Extraemos los tickets ordenados por fecha, del más nuevo al más viejo
-    const consulta = `
+   const consulta = `
       SELECT 
         id_ticket as id, 
         titulo, 
+        descripcion,    -- Agregamos la descripción para la tarjeta
+        prioridad,      -- Agregamos la prioridad
         estado, 
         fecha_apertura as fecha
       FROM Ticket
@@ -274,30 +275,85 @@ app.post('/api/personal/tecnicos', async (req, res) => {
   const { nombres, correo, pass } = req.body;
 
   try {
-    // 1. Validar que el correo no exista ya en el sistema
     const validacion = await pool.query('SELECT id_usuario FROM Usuario WHERE correo = $1', [correo]);
     if (validacion.rows.length > 0) {
-      return res.status(400).json({ mensaje: 'Este correo ya está registrado en el sistema.' });
+      return res.status(400).json({ mensaje: 'Este correo ya está registrado.' });
     }
 
-    // 2. Insertar al nuevo técnico
-    const consulta = `
+    const consultaUsuario = `
       INSERT INTO Usuario (nombres, correo, pass, rol) 
-      VALUES ($1, $2, $3, 'Técnico')
-      RETURNING id_usuario, nombres, correo, rol;
+      VALUES ($1, $2, $3, 'Técnico') RETURNING id_usuario, nombres, correo, rol;
     `;
+    const resultado = await pool.query(consultaUsuario, [nombres, correo, pass]);
+    const nuevoId = resultado.rows[0].id_usuario;
+
+    // ¡DOBLE INSERCIÓN PARA TÉCNICOS TAMBIÉN!
+    const consultaTecnico = `INSERT INTO tecnico (id_usuario) VALUES ($1)`;
+    await pool.query(consultaTecnico, [nuevoId]);
     
-    const resultado = await pool.query(consulta, [nombres, correo, pass]);
-    
-    res.status(201).json({ 
-      mensaje: 'Técnico dado de alta exitosamente', 
-      tecnico: resultado.rows[0] 
-    });
+    res.status(201).json({ mensaje: 'Técnico dado de alta exitosamente', tecnico: resultado.rows[0] });
   } catch (error) {
     console.error('Error al crear técnico:', error);
     res.status(500).json({ mensaje: 'Error interno al guardar en la base de datos' });
   }
 });
+
+// ==========================================
+// RUTA: TICKETS ASIGNADOS A UN TÉCNICO (Resumen)
+// ==========================================
+app.get('/api/personal/tecnicos/:id/tickets', async (req, res) => {
+  const { id } = req.params;
+  try {
+    const consulta = `
+      SELECT 
+        id_ticket as id, 
+        titulo, 
+        estado, 
+        prioridad, 
+        TO_CHAR(fecha_apertura, 'DD/MM/YYYY') as fecha
+      FROM Ticket
+      WHERE id_tecnico = $1
+      ORDER BY fecha_apertura DESC;
+    `;
+    const resultado = await pool.query(consulta, [id]);
+    res.status(200).json(resultado.rows);
+  } catch (error) {
+    console.error('Error al obtener tickets del técnico:', error);
+    res.status(500).json({ mensaje: 'Error al consultar los tickets asignados' });
+  }
+});
+
+
+// ==========================================
+// RUTA: REGISTRO PÚBLICO DE CLIENTES (CORREGIDA)
+// ==========================================
+app.post('/api/registro', async (req, res) => {
+  const { nombres, correo, pass } = req.body;
+
+  try {
+    const validacion = await pool.query('SELECT id_usuario FROM usuario WHERE correo = $1', [correo]);
+    if (validacion.rows.length > 0) {
+      return res.status(400).json({ mensaje: 'Este correo ya está registrado.' });
+    }
+
+    const consultaUsuario = `
+      INSERT INTO usuario (nombres, correo, pass, rol) 
+      VALUES ($1, $2, $3, 'Cliente') RETURNING id_usuario;
+    `;
+    const resultadoUsuario = await pool.query(consultaUsuario, [nombres, correo, pass]);
+    const nuevoId = resultadoUsuario.rows[0].id_usuario;
+
+    // ¡EL CAMBIO MÁGICO! Usamos id_usuario como dice tu tabla Cliente
+    const consultaCliente = `INSERT INTO cliente (id_usuario) VALUES ($1)`;
+    await pool.query(consultaCliente, [nuevoId]);
+    
+    res.status(201).json({ mensaje: 'Cuenta creada exitosamente.' });
+  } catch (error) {
+    console.error('Error FATAL en el registro de cliente:', error);
+    res.status(500).json({ mensaje: 'Error al intentar crear tu cuenta' });
+  }
+});
+
 
 // Encender el servidor
 app.listen(port, () => {

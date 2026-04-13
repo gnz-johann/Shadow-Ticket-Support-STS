@@ -1,12 +1,13 @@
 import { useState, useEffect } from 'react';
-import { useNavigate, Outlet } from 'react-router-dom';
+import { useNavigate, Outlet, useLocation } from 'react-router-dom'; // 1. Agregamos useLocation
 import Sidebar from '../../components/dashboard/Sidebar';
 import ClienteDashboard from './ClienteDashboard';
-import { Toaster } from 'react-hot-toast'; // Se borró la importación que no se usaba
+import { Toaster } from 'react-hot-toast'; 
 
 const DashboardLayout = () => {
   const [usuario, setUsuario] = useState(null);
   const navigate = useNavigate();
+  const location = useLocation(); // 2. Inicializamos el rastreador de URL
 
   useEffect(() => {
     const token = localStorage.getItem('token_sts');
@@ -40,15 +41,16 @@ const DashboardLayout = () => {
   // VALIDACIÓN ROBUSTA DE 3 NIVELES
   const rolNormalizado = usuario.rol.toUpperCase();
   const esAdmin = rolNormalizado === 'ADMIN';
-  const esTecnico = rolNormalizado.includes('T'); 
-  // Permitimos el paso al panel interno si es Admin o Técnico
+  const esTecnico = rolNormalizado === 'TÉCNICO' || rolNormalizado === 'TECNICO'; 
   const accesoInterno = esAdmin || esTecnico;
+
+  // 3. NUEVO: Verificamos si estamos exactamente en la raíz del dashboard
+  const esRutaRaiz = location.pathname === '/dashboard' || location.pathname === '/dashboard/';
 
   return (
     <div className="flex h-screen bg-beige font-body overflow-hidden">
         <Toaster position="top-right" reverseOrder={false} />
         
-      {/* 2. Le pasamos la variable inteligente al Sidebar */}
      <Sidebar esAdmin={esAdmin} esTecnico={esTecnico} />
       
       <div className="flex-1 flex flex-col w-full h-full">
@@ -65,7 +67,12 @@ const DashboardLayout = () => {
         </header>
 
         <main className="flex-1 overflow-x-hidden overflow-y-auto bg-beige-dark/10 p-10">
-          {accesoInterno ? <Outlet /> : <ClienteDashboard />}
+          {/* 4. EL NUEVO BIFURCADOR INTELIGENTE */}
+          {accesoInterno ? (
+            <Outlet /> 
+          ) : (
+            esRutaRaiz ? <ClienteDashboard /> : <Outlet /> 
+          )}
         </main>
 
       </div>

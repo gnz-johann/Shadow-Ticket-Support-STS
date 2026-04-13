@@ -42,14 +42,17 @@ const ClienteDashboard = () => {
     const toastId = toast.loading('Enviando tu solicitud...');
 
     try {
+      // 1. Extraemos el ID real del usuario desde su Token
       const token = localStorage.getItem('token_sts');
       const payload = JSON.parse(atob(token.split('.')[1])); 
-      const id_cliente = payload.id;
+      const idRealDelCliente = payload.id;
 
+      // 2. Enviamos la petición con el ID dinámico
       await axios.post('http://localhost:4000/api/tickets', {
-        id_cliente,
+        id_cliente: idRealDelCliente, // <--- ¡Aquí estaba el error!
         titulo,
         descripcion
+        // Recuerda que quitamos la 'prioridad' porque el cliente ya no la elige
       });
 
       setTitulo('');

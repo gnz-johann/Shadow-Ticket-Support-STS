@@ -27,6 +27,7 @@ const Sidebar = ({ esAdmin, esTecnico }) => {
 
   const menuCliente = [
     { nombre: 'Panel Gneral', icono: '📊', ruta: '/dashboard' },
+    { nombre: 'Mi Historial', icono: '📁', ruta: '/dashboard/historial-cliente' },
   ];
 
   const opciones = esAdmin ? menuAdmin : (esTecnico ? menuTecnico : menuCliente);
