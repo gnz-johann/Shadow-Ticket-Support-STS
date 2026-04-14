@@ -1,4 +1,4 @@
-const Pricing = () => {
+const Pricing = ({onSelectPlan}) => {
   // Estructura de nuestros 3 planes estratégicos
   const plans = [
     {
@@ -16,7 +16,7 @@ const Pricing = () => {
     },
     {
       name: "Business",
-      price: "499",
+      price: "19.99",
       description: "Para equipos ágiles y PYMES.",
       features: [
         "Hasta 5 Técnicos",
@@ -30,7 +30,7 @@ const Pricing = () => {
     },
     {
       name: "Enterprise",
-      price: "999",
+      price: "49.99",
       description: "Control corporativo total.",
       features: [
         "Técnicos ilimitados",
@@ -76,6 +76,7 @@ const Pricing = () => {
                 </div>
               )}
 
+
               <h3 className="text-2xl font-heading font-bold mb-2">{plan.name}</h3>
               <p className={`font-body text-sm mb-6 ${plan.isPopular ? 'text-beige-dark' : 'text-moss-light'}`}>
                 {plan.description}
@@ -83,7 +84,7 @@ const Pricing = () => {
               
               <div className="mb-8">
                 <span className="font-mono text-5xl font-bold">${plan.price}</span>
-                <span className={`font-body text-sm ${plan.isPopular ? 'text-beige-dark' : 'text-moss-light'}`}> / MXN mes</span>
+                <span className={`font-body text-sm ${plan.isPopular ? 'text-beige-dark' : 'text-moss-light'}`}> / USD mes</span>
               </div>
 
               <ul className="space-y-4 mb-8 font-body">
@@ -96,10 +97,9 @@ const Pricing = () => {
               </ul>
 
               <button 
+                onClick={() => onSelectPlan(plan)} // 2. AÑADIMOS EL EVENTO CLIC AQUÍ
                 className={`w-full py-3 rounded-full font-heading font-bold transition-colors ${
-                  plan.isPopular 
-                    ? 'bg-pastel-green text-moss hover:bg-beige' 
-                    : 'bg-moss text-beige hover:bg-moss-light'
+                  plan.isPopular ? 'bg-pastel-green text-moss hover:bg-beige' : 'bg-moss text-beige hover:bg-moss-light'
                 }`}
               >
                 {plan.buttonText}

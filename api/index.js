@@ -355,6 +355,58 @@ app.post('/api/registro', async (req, res) => {
 });
 
 
+// ==========================================
+// FUNCIÓN MATEMÁTICA: ALGORITMO DE LUHN
+// ==========================================
+// Esta función verifica que el número de tarjeta sea estructuralmente real
+const esTarjetaReal = (numero) => {
+  let suma = 0;
+  let debeDuplicar = false;
+  
+  // Recorremos los números de derecha a izquierda
+  for (let i = numero.length - 1; i >= 0; i--) {
+      let digito = parseInt(numero.charAt(i));
+      if (debeDuplicar) {
+          if ((digito *= 2) > 9) digito -= 9;
+      }
+      suma += digito;
+      debeDuplicar = !debeDuplicar;
+  }
+  // Si es un múltiplo exacto de 10, la tarjeta es válida
+  return (suma % 10) === 0;
+};
+
+// ==========================================
+// RUTA: PROCESAR PAGO DE SUSCRIPCIÓN (SIMULADOR)
+// ==========================================
+app.put('/api/cliente/:id/suscripcion', async (req, res) => {
+  const { id } = req.params;
+  const { id_plan, numero_tarjeta } = req.body;
+
+  // 1. El Cadenero: Validamos la tarjeta antes de tocar la Base de Datos
+  if (!esTarjetaReal(numero_tarjeta)) {
+      return res.status(400).json({ 
+        mensaje: 'Transacción rechazada: Por favor, ingrese un número de tarjeta válido y existente.' 
+      });
+  }
+
+  // 2. Si la tarjeta es matemáticamente real, actualizamos el plan
+  try {
+      const consulta = 'UPDATE Cliente SET id_plan = $1 WHERE id_usuario = $2 RETURNING id_plan';
+      const resultado = await pool.query(consulta, [id_plan, id]);
+
+      if (resultado.rowCount === 0) {
+        return res.status(404).json({ mensaje: 'Cliente no encontrado en la base de datos.' });
+      }
+
+      res.status(200).json({ mensaje: '¡Suscripción actualizada exitosamente!' });
+  } catch (error) {
+      console.error('Error al procesar la suscripción:', error);
+      res.status(500).json({ mensaje: 'Error interno al procesar el pago seguro.' });
+  }
+});
+
+
 // Encender el servidor
 app.listen(port, () => {
   console.log(`🚀 Cajero Backend corriendo en http://localhost:${port}`);

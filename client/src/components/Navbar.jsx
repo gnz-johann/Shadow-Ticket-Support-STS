@@ -29,7 +29,7 @@ const Navbar = () => {
         
         {/* Logotipo */}
         <div className="text-beige font-heading font-bold text-2xl tracking-widest cursor-pointer">
-          STS<span className="text-pastel-green">.</span>
+          STS<span className="text-pastel-green"></span>
         </div>
 
         {/* Enlaces Centrales (Ocultos en celulares, visibles en pantallas medianas o más) */}
