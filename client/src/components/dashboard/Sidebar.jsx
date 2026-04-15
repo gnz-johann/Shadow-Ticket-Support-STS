@@ -15,7 +15,7 @@ const Sidebar = ({ esAdmin, esTecnico }) => {
   const menuTecnico = [
     { nombre: 'Piscina de Tickets', icono: '🌊', ruta: '/dashboard' },
     { nombre: 'Mis Tickets', icono: '🎫', ruta: '/dashboard/mis-tickets' },
-    { nombre: 'Historial', icono: '✅', ruta: '/dashboard/historial' },
+    { nombre: 'Historial', icono: '📁', ruta: '/dashboard/historial' },
     { nombre: 'Configuración', icono: '⚙️', ruta: '/dashboard/configuracion' },
   ];
 

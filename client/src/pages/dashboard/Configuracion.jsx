@@ -30,7 +30,7 @@ const Configuracion = () => {
         {/* Tabla de Información Actual */}
         <div className="p-8 border-b border-beige-dark bg-beige-dark/5">
           <h3 className="text-lg font-bold text-moss mb-4 flex items-center gap-2">
-            👤 Información de Identidad
+            Información de Identidad
           </h3>
           <table className="w-full text-sm text-left text-moss">
             <tbody>
@@ -55,7 +55,7 @@ const Configuracion = () => {
           <div className="flex flex-col md:flex-row items-center gap-8">
             <div className="relative group">
               <div className="w-32 h-32 rounded-full bg-pastel-green flex items-center justify-center text-4xl border-4 border-white shadow-lg overflow-hidden">
-                {usuario.foto ? <img src={usuario.foto} alt="Perfil" /> : '👤'}
+                {usuario.foto ? <img src={usuario.foto} alt="Perfil" /> : ''}
               </div>
               <label className="absolute inset-0 flex items-center justify-center bg-moss/60 text-beige opacity-0 group-hover:opacity-100 transition-opacity duration-[1200ms] rounded-full cursor-pointer text-xs font-bold">
                 Editar Foto

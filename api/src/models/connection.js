@@ -5,21 +5,19 @@ dotenv.config();
 
 const { Pool } = pkg;
 
-// Configuración Híbrida
+// Configuración Directa y Básica
 const pool = new Pool({
-  // Si existe DATABASE_URL (en Render), la usa. Si no, usa las variables locales del .env
-  connectionString: process.env.DATABASE_URL || undefined,
-  user: process.env.DATABASE_URL ? undefined : process.env.DB_USER,
-  host: process.env.DATABASE_URL ? undefined : process.env.DB_HOST,
-  password: process.env.DATABASE_URL ? undefined : process.env.DB_PASSWORD,
-  database: process.env.DATABASE_URL ? undefined : process.env.DB_NAME,
-  port: process.env.DATABASE_URL ? undefined : process.env.DB_PORT,
-  // CRITICO: SSL es obligatorio para conectar con Render desde afuera
-  ssl: process.env.DATABASE_URL ? { rejectUnauthorized: false } : false
+  user: process.env.DB_USER,
+  host: process.env.DB_HOST,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME,
+  port: process.env.DB_PORT,
+  // Esta línea es la única regla obligatoria de Render para dejarte entrar desde tu computadora:
+  ssl: { rejectUnauthorized: false } 
 });
 
 pool.connect()
-  .then(() => console.log('🟢 Bóveda Conectada: STS (Entorno detectado correctamente)'))
+  .then(() => console.log('🟢 Bóveda Conectada: STS (Conectado directamente a Oregon)'))
   .catch((err) => console.error('🔴 Error de conexión a la BD', err));
 
 export default pool;
