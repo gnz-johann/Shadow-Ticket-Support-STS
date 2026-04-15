@@ -6,7 +6,6 @@ import Hero from '../components/Hero';
 import Features from '../components/Features';
 import Pricing from '../components/Pricing';
 import SuscripcionModal from '../components/SuscripcionModal'; 
-import Contacto from '../components/Contacto';
 
 const Home = () => {
   const [modalAbierto, setModalAbierto] = useState(false);
@@ -36,7 +35,6 @@ const Home = () => {
       
       {/* 3. Le pasamos la función a nuestros precios */}
       <Pricing onSelectPlan={manejarSeleccionPlan} />
-      <Contacto />
       {/* 4. Nuestro Modal Simulador escondido */}
       <SuscripcionModal 
         isOpen={modalAbierto} 

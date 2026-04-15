@@ -72,7 +72,8 @@ app.get('/api/tickets/disponibles', async (req, res) => {
         u.nombres AS cliente,
         t.titulo,
         t.prioridad,
-        t.estado
+        t.estado,
+        t.fecha_apertura as fecha
       FROM Ticket t
       JOIN Usuario u ON t.id_cliente = u.id_usuario
       WHERE t.id_tecnico IS NULL AND t.estado != 'Resuelto'
@@ -128,11 +129,12 @@ app.get('/api/tickets/mis-pendientes/:id_tecnico', async (req, res) => {
         u.nombres AS cliente,
         t.titulo,
         t.prioridad,
-        t.estado
+        t.estado,
+        t.fecha_apertura as fecha -- 🟢 ¡AQUÍ TAMBIÉN! 🟢
       FROM Ticket t
       JOIN Usuario u ON t.id_cliente = u.id_usuario
       WHERE t.id_tecnico = $1 AND t.estado = 'En Proceso'
-      ORDER BY t.prioridad DESC; -- (Opcional) Puedes ordenar por fecha también
+      ORDER BY t.prioridad DESC;
     `;
     const resultado = await pool.query(consulta, [id_tecnico]);
     res.status(200).json(resultado.rows);
@@ -456,7 +458,34 @@ app.post('/api/soporte/reportar', async (req, res) => {
   }
 });
 
+
+// ==========================================
+// RUTA: REABRIR TICKET (Cliente)
+// ==========================================
+app.put('/api/tickets/reabrir/:id', async (req, res) => {
+  const { id } = req.params;
+  const { motivo } = req.body;
+
+  try {
+    // Cambiamos el estado a 'Abierto' y concatenamos el nuevo comentario a la descripción original
+    const consulta = `
+      UPDATE Ticket 
+      SET estado = 'Abierto', 
+          descripcion = descripcion || E'\n\n[🔴 REABIERTO POR EL CLIENTE]: ' || $1
+      WHERE id_ticket = $2
+      RETURNING *;
+    `;
+    await pool.query(consulta, [motivo, id]);
+    
+    res.status(200).json({ mensaje: 'Ticket reabierto con éxito. Un técnico lo revisará pronto.' });
+  } catch (error) {
+    console.error('Error al reabrir ticket:', error);
+    res.status(500).json({ mensaje: 'Error interno al intentar reabrir el ticket.' });
+  }
+});
+
+
 // Encender el servidor
 app.listen(port, () => {
-  console.log(`🚀 Cajero Backend corriendo en http://localhost:${port}`);
+  console.log(`Backend corriendo en http://localhost:${port}`);
 });

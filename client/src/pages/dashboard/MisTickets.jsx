@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import toast from 'react-hot-toast';
+import TicketCard from '../../components/dashboard/TicketCard';
 
 const MisTickets = () => {
   const [misTickets, setMisTickets] = useState([]);
@@ -10,6 +11,7 @@ const MisTickets = () => {
   const [modalAbierto, setModalAbierto] = useState(false);
   const [ticketSeleccionado, setTicketSeleccionado] = useState(null);
   const [comentarioCierre, setComentarioCierre] = useState('');
+  const [ticketDetalle, setTicketDetalle] = useState(null);
 
   useEffect(() => {
     const obtenerMisTickets = async () => {
@@ -105,8 +107,10 @@ const MisTickets = () => {
               </div>
 
               <div className="flex justify-end gap-3">
-                <button className="px-4 py-2 text-sm font-bold text-moss border-2 border-beige-dark rounded-xl hover:bg-beige transition-colors">
-                  Ver Detalles
+                <button 
+                  onClick={() => setTicketDetalle(ticket)}
+                  className="px-4 py-2 text-sm font-bold text-moss border-2 border-beige-dark rounded-xl hover:bg-beige transition-colors duration-[1200ms]">
+                    Ver Detalles
                 </button>
                 <button 
                   onClick={() => abrirModal(ticket)}
@@ -115,6 +119,12 @@ const MisTickets = () => {
                   ✅ Finalizar Soporte
                 </button>
               </div>
+                {ticketDetalle && (
+                  <TicketCard 
+                  ticket={ticketDetalle} 
+                  onClose={() => setTicketDetalle(null)} 
+                 />
+                )}
             </div>
           ))
         )}

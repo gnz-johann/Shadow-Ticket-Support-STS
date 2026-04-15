@@ -95,7 +95,7 @@ const DashboardLayout = () => {
       toast.success('¡Gracias! Reporte recibido.', { id: tid });
       setModalSoporteAbierto(false);
       setReporte({ tipo: 'Bug', descripcion: '' });
-    } catch (e) { 
+    } catch (error) { 
       toast.error('Error al enviar el reporte.', { id: tid }); 
     }
   };
