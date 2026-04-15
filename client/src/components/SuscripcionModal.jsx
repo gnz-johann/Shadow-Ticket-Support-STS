@@ -21,7 +21,7 @@ const SubscriptionModal = ({ isOpen, onClose, plan }) => {
       const idRealDelCliente = payload.id;
 
       // Enviamos el pago a nuestra ruta validadora
-      await axios.put(`https://shadow-ticket-support-backend-jace.onrender.com/cliente/${idRealDelCliente}/suscripcion`, {
+      await axios.put(`https://shadow-ticket-support-backend-jace.onrender.com/api/cliente/${idRealDelCliente}/suscripcion`, {
         id_plan: plan.name === 'Premium' ? 2 : (plan.name === 'Enterprise' ? 3 : 1), 
         numero_tarjeta: numeroTarjeta.replace(/\s/g, '')
       });

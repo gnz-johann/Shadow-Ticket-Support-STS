@@ -19,7 +19,7 @@ const HistorialTecnico = () => {
         const payload = JSON.parse(atob(token.split('.')[1])); 
         const id_tecnico = payload.id;
 
-        const respuesta = await axios.get(`https://shadow-ticket-support-backend-jace.onrender.com/tickets/historial-tecnico/${id_tecnico}`);
+        const respuesta = await axios.get(`https://shadow-ticket-support-backend-jace.onrender.com/api/tickets/historial-tecnico/${id_tecnico}`);
         setHistorial(respuesta.data);
       } catch (error) {
         toast.error("No se pudo cargar tu historial de resoluciones.");

@@ -17,7 +17,7 @@ const HistorialCliente = () => {
         const payload = JSON.parse(atob(token.split('.')[1])); 
         const id_cliente = payload.id;
 
-        const respuesta = await axios.get(`https://shadow-ticket-support-backend-jace.onrender.com/tickets/cliente/${id_cliente}`);
+        const respuesta = await axios.get(`https://shadow-ticket-support-backend-jace.onrender.com/api/tickets/cliente/${id_cliente}`);
         setHistorial(respuesta.data);
       } catch (error) {
         toast.error("No se pudo cargar tu historial maestro.");

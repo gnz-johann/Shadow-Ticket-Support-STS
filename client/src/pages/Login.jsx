@@ -13,7 +13,7 @@ const Login = () => {
     setMensaje('Verificando credenciales...');
     
     try {
-      const respuesta = await axios.post('https://shadow-ticket-support-backend-jace.onrender.com/login', { correo, pass });
+      const respuesta = await axios.post('https://shadow-ticket-support-backend-jace.onrender.com/api/login', { correo, pass });
       localStorage.setItem('token_sts', respuesta.data.token);
       navigate('/dashboard'); 
     } catch (error) {

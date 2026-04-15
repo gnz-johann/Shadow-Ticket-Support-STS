@@ -13,7 +13,7 @@ const TecnicoDashboard = () => {
   useEffect(() => {
     const obtenerTickets = async () => {
       try {
-        const respuesta = await axios.get('https://shadow-ticket-support-backend-jace.onrender.com/tickets/disponibles');
+        const respuesta = await axios.get('https://shadow-ticket-support-backend-jace.onrender.com/api/tickets/disponibles');
         // Para probar nuestra nueva lógica, forzamos a que los tickets de la BD 
         // vengan con prioridad "Sin Asignar" si no la tienen definida.
         const ticketsFormateados = respuesta.data.map(t => ({
@@ -59,7 +59,7 @@ const TecnicoDashboard = () => {
       const id_tecnico = payload.id;
 
       // Ahora enviamos la prioridad al backend también
-      await axios.put(`https://shadow-ticket-support-backend-jace.onrender.com/tickets/tomar/${id_ticket}`, { 
+      await axios.put(`https://shadow-ticket-support-backend-jace.onrender.com/api/tickets/tomar/${id_ticket}`, { 
         id_tecnico, 
         prioridad: prioridadElegida 
       });

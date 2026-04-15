@@ -11,7 +11,7 @@ const Registro = () => {
     e.preventDefault();
     const toastId = toast.loading('Preparando entorno...');
     try {
-      await axios.post('https://shadow-ticket-support-backend-jace.onrender.com/registro', datos);
+      await axios.post('https://shadow-ticket-support-backend-jace.onrender.com/api/registro', datos);
       toast.success('¡Registro exitoso! Bienvenido.', { id: toastId });
       setTimeout(() => navigate('/login'), 2000);
     } catch (error) {
