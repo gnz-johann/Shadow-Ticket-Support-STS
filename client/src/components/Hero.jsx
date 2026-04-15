@@ -18,12 +18,12 @@ const Hero = () => {
 
       <div className="relative z-10 max-w-7xl mx-auto px-6 text-center">
         <h1 className="text-5xl md:text-7xl font-heading font-bold text-beige mb-6 tracking-tight leading-tight">
-          Soporte técnico invisible,<br/>
-          <span className="text-pastel-green">resultados brillantes.</span>
+          Soporte técnico continuo,<br/>
+          <span className="text-pastel-green">resultados increíbles.</span>
         </h1>
         
         <p className="text-lg md:text-xl font-body text-beige-dark mb-10 max-w-3xl mx-auto leading-relaxed">
-          Gestiona, resuelve y escala. El HelpDesk en la nube diseñado para equipos ágiles que exigen control total y resoluciones en tiempo récord.
+          Gestiona, resuelve y escala. El SaaS diseñado para equipos que exigen control total y resoluciones en tiempo récord.
         </p>
         
         <div className="flex flex-col sm:flex-row justify-center gap-4">

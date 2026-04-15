@@ -123,7 +123,7 @@ const DashboardLayout = () => {
               <div className="absolute top-14 right-0 w-56 bg-white rounded-2xl shadow-xl border border-beige-dark p-5 z-50 animate-fadeIn">
                 <p className="text-xs font-bold text-moss-light uppercase tracking-wider">Tu Plan Actual</p>
                 <div className="flex items-center gap-3 mt-2 mb-4">
-                  <span className="text-2xl">{usuario.plan === 'Premium' ? '👑' : '🛡️'}</span>
+                  <span className="text-2xl">{usuario.plan === 'Premium' ? '' : ''}</span>
                   <p className="font-bold text-lg text-moss">{usuario.plan}</p>
                 </div>
                 
@@ -177,7 +177,7 @@ const DashboardLayout = () => {
             
             <form onSubmit={handlePagoSuscripcion} className="p-8 space-y-5">
               <div className="text-center mb-6">
-                <p className="text-2xl font-bold text-moss">$19.99 USD</p>
+                <p className="text-2xl font-bold text-moss">$399 MXN</p>
                 <p className="text-sm text-moss-light">Plan Premium Anual</p>
               </div>
 

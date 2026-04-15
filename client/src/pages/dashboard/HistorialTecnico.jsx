@@ -52,7 +52,7 @@ const HistorialTecnico = () => {
     <div className="space-y-6">
       <div className="bg-white p-6 rounded-2xl shadow-sm border border-beige-dark flex flex-col md:flex-row justify-between items-center gap-4">
         <div>
-          <h2 className="text-2xl font-heading font-bold text-moss">🏆 Mi Historial de Resoluciones</h2>
+          <h2 className="text-2xl font-heading font-bold text-moss">Historial de tickets resueltos</h2>
           <p className="text-moss-light text-sm mt-1">Aquí se muestran todos los tickets que has cerrado exitosamente.</p>
         </div>
         <span className="bg-pastel-green/20 text-moss-deep px-4 py-2 rounded-xl font-bold text-lg shadow-sm border border-pastel-green">

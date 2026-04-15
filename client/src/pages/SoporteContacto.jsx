@@ -17,8 +17,7 @@ const SoporteContacto = () => {
   return (
     <div className="min-h-screen relative font-body overflow-hidden">
       <Toaster position="top-right" />
-      
-      {/* 🖼️ FONDO FOTOGRÁFICO DE SOPORTE / OFICINAS ESTILO STS */}
+    
       <div className="fixed inset-0 z-0">
         <img 
           src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&q=80" 
@@ -44,11 +43,11 @@ const SoporteContacto = () => {
           <form onSubmit={handleSubmit} className="space-y-5">
             <div>
               <label className="block text-xs font-bold text-moss-light uppercase tracking-widest mb-2">Nombre Completo</label>
-              <input type="text" required value={datos.nombre} onChange={(e) => setDatos({...datos, nombre: e.target.value})} className="w-full px-4 py-3 rounded-xl border-2 border-beige-dark focus:border-moss outline-none transition-all duration-[1200ms]" placeholder="Ej. Juan Pérez" />
+              <input type="text" required value={datos.nombre} onChange={(e) => setDatos({...datos, nombre: e.target.value})} className="w-full px-4 py-3 rounded-xl border-2 border-beige-dark focus:border-moss outline-none transition-all duration-[1200ms]" placeholder="Ej. Mioses Segura" />
             </div>
             <div>
               <label className="block text-xs font-bold text-moss-light uppercase tracking-widest mb-2">Correo Electrónico</label>
-              <input type="email" required value={datos.correo} onChange={(e) => setDatos({...datos, correo: e.target.value})} className="w-full px-4 py-3 rounded-xl border-2 border-beige-dark focus:border-moss outline-none transition-all duration-[1200ms]" placeholder="juan@empresa.com" />
+              <input type="email" required value={datos.correo} onChange={(e) => setDatos({...datos, correo: e.target.value})} className="w-full px-4 py-3 rounded-xl border-2 border-beige-dark focus:border-moss outline-none transition-all duration-[1200ms]" placeholder="moises@empresa.com" />
             </div>
             <div>
               <label className="block text-xs font-bold text-moss-light uppercase tracking-widest mb-2">¿Cómo podemos ayudarte?</label>

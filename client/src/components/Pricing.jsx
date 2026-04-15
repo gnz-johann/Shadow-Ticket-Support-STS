@@ -2,7 +2,7 @@ const Pricing = ({onSelectPlan}) => {
   // Estructura de nuestros 3 planes estratégicos
   const plans = [
     {
-      name: "Starter",
+      name: "Gratis",
       price: "0",
       description: "Perfecto para probar el sistema.",
       features: [
@@ -15,31 +15,31 @@ const Pricing = ({onSelectPlan}) => {
       isPopular: false
     },
     {
-      name: "Business",
-      price: "19.99",
+      name: "Empresarial",
+      price: "399",
       description: "Para equipos ágiles y PYMES.",
       features: [
         "Hasta 5 Técnicos",
         "Tickets ilimitados",
         "Priorización de tickets",
-        "Automatización de cierre (Triggers)",
+        "Automatización de cierre ",
         "Reportes básicos SQL"
       ],
-      buttonText: "Suscribirse - PayPal",
+      buttonText: "Comprar Plan",
       isPopular: true // Este valor hará que la tarjeta resalte
     },
     {
-      name: "Enterprise",
-      price: "49.99",
+      name: "Experto",
+      price: "499",
       description: "Control corporativo total.",
       features: [
         "Técnicos ilimitados",
         "Soporte prioritario 24/7",
-        "Acceso directo a la API",
+        "Acesor técnico especializado",
         "Métricas avanzadas",
-        "SLA garantizado"
+        "Todos los beneficios anteriores"
       ],
-      buttonText: "Contactar Ventas",
+      buttonText: "Comprar Plan",
       isPopular: false
     }
   ];
@@ -84,7 +84,7 @@ const Pricing = ({onSelectPlan}) => {
               
               <div className="mb-8">
                 <span className="font-mono text-5xl font-bold">${plan.price}</span>
-                <span className={`font-body text-sm ${plan.isPopular ? 'text-beige-dark' : 'text-moss-light'}`}> / USD mes</span>
+                <span className={`font-body text-sm ${plan.isPopular ? 'text-beige-dark' : 'text-moss-light'}`}> / MXN mes</span>
               </div>
 
               <ul className="space-y-4 mb-8 font-body">
