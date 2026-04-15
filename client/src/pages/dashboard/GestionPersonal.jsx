@@ -20,7 +20,7 @@ const GestionPersonal = () => {
 
   const obtenerPersonal = async () => {
     try {
-      const respuesta = await axios.get('http://localhost:4000/api/personal/tecnicos');
+      const respuesta = await axios.get('https://shadow-ticket-support-backend-jace.onrender.com/personal/tecnicos');
       setPersonal(respuesta.data);
     } catch (error) {
       console.error("Error al cargar personal", error);
@@ -33,7 +33,7 @@ const GestionPersonal = () => {
   const verTicketsAsignados = async (persona) => {
     const tid = toast.loading('Obteniendo expedientes...');
     try {
-      const respuesta = await axios.get(`http://localhost:4000/api/personal/tecnicos/${persona.id}/tickets`);
+      const respuesta = await axios.get(`https://shadow-ticket-support-backend-jace.onrender.com/personal/tecnicos/${persona.id}/tickets`);
       setTicketsTecnico(respuesta.data);
       setTecnicoAuditoria(persona);
       toast.dismiss(tid);
@@ -52,7 +52,7 @@ const GestionPersonal = () => {
     const toastId = toast.loading('Registrando nuevo técnico...');
 
     try {
-      await axios.post('http://localhost:4000/api/personal/tecnicos', {
+      await axios.post('https://shadow-ticket-support-backend-jace.onrender.com/personal/tecnicos', {
         nombres: nuevoNombre,
         correo: nuevoCorreo,
         pass: nuevoPass

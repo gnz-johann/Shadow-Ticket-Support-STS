@@ -22,7 +22,7 @@ const MisTickets = () => {
         const payload = JSON.parse(atob(token.split('.')[1])); 
         const id_tecnico = payload.id;
 
-        const respuesta = await axios.get(`http://localhost:4000/api/tickets/mis-pendientes/${id_tecnico}`);
+        const respuesta = await axios.get(`https://shadow-ticket-support-backend-jace.onrender.com/tickets/mis-pendientes/${id_tecnico}`);
         setMisTickets(respuesta.data);
         setCargando(false);
       } catch (error) {
@@ -55,7 +55,7 @@ const MisTickets = () => {
       const payload = JSON.parse(atob(token.split('.')[1])); 
       const id_tecnico = payload.id;
 
-      await axios.put(`http://localhost:4000/api/tickets/resolver/${ticketSeleccionado.id}`, {
+      await axios.put(`https://shadow-ticket-support-backend-jace.onrender.com/tickets/resolver/${ticketSeleccionado.id}`, {
         id_tecnico,
         comentario: comentarioCierre
       });

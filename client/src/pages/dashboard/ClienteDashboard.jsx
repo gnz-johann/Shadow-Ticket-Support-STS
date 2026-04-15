@@ -19,7 +19,7 @@ const ClienteDashboard = () => {
       const payload = JSON.parse(atob(token.split('.')[1])); 
       const id_cliente = payload.id;
 
-      const respuesta = await axios.get(`http://localhost:4000/api/tickets/cliente/${id_cliente}`);
+      const respuesta = await axios.get(`https://shadow-ticket-support-backend-jace.onrender.com/tickets/cliente/${id_cliente}`);
       setMisTickets(respuesta.data); // Guardamos los tickets reales
     } catch (error) {
       toast.error("No se pudo cargar tu historial de tickets.");
@@ -48,7 +48,7 @@ const ClienteDashboard = () => {
       const idRealDelCliente = payload.id;
 
       // 2. Enviamos la petición con el ID dinámico
-      await axios.post('http://localhost:4000/api/tickets', {
+      await axios.post('https://shadow-ticket-support-backend-jace.onrender.com/tickets', {
         id_cliente: idRealDelCliente, // <--- ¡Aquí estaba el error!
         titulo,
         descripcion

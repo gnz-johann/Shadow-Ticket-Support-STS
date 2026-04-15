@@ -66,7 +66,7 @@ const DashboardLayout = () => {
     const toastId = toast.loading('Conectando con la pasarela bancaria...');
 
     try {
-      await axios.put(`http://localhost:4000/api/cliente/${usuario.id}/suscripcion`, {
+      await axios.put(`https://shadow-ticket-support-backend-jace.onrender.com/cliente/${usuario.id}/suscripcion`, {
         id_plan: 2,
         numero_tarjeta: numeroTarjeta.replace(/\s/g, '')
       });
@@ -88,7 +88,7 @@ const DashboardLayout = () => {
     e.preventDefault();
     const tid = toast.loading('Enviando reporte al equipo STS...');
     try {
-      await axios.post('http://localhost:4000/api/soporte/reportar', {
+      await axios.post('https://shadow-ticket-support-backend-jace.onrender.com/soporte/reportar', {
         id_usuario: usuario.id,
         ...reporte
       });

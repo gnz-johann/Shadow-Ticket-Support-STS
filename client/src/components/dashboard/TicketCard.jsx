@@ -29,7 +29,7 @@ const TicketCard = ({ ticket, onClose }) => {
     const tid = toast.loading('Reabriendo ticket...');
 
     try {
-      await axios.put(`http://localhost:4000/api/tickets/reabrir/${ticket.id}`, { motivo });
+      await axios.put(`https://shadow-ticket-support-backend-jace.onrender.com/tickets/reabrir/${ticket.id}`, { motivo });
       toast.success('Ticket reabierto. Lo revisaremos pronto.', { id: tid });
       setTimeout(() => {
         onClose();
