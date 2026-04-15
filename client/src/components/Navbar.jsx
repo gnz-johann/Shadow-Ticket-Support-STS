@@ -1,13 +1,11 @@
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom'; // 👈 Nuestro nuevo transportador
+import { Link } from 'react-router-dom';
 
 const Navbar = () => {
-  // Estado para saber si el usuario ha bajado por la página
   const [isScrolled, setIsScrolled] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
-      // Si baja más de 20 píxeles, cambiamos el estado
       if (window.scrollY > 20) {
         setIsScrolled(true);
       } else {
@@ -21,7 +19,7 @@ const Navbar = () => {
 
   return (
     <nav 
-      className={`fixed w-full z-50 transition-all duration-300 ${
+      className={`fixed w-full z-50 transition-all duration-[1200ms] ease-in-out ${
         isScrolled ? 'bg-moss shadow-lg py-4' : 'bg-transparent py-6'
       }`}
     >
@@ -32,7 +30,7 @@ const Navbar = () => {
           STS<span className="text-pastel-green"></span>
         </div>
 
-        {/* Enlaces Centrales (Ocultos en celulares, visibles en pantallas medianas o más) */}
+        {/* Enlaces Centrales */}
         <div className="hidden md:flex space-x-10 text-beige font-heading text-sm font-semibold tracking-wide">
           <a href="#inicio" className="hover:text-pastel-green transition-colors">Inicio</a>
           <a href="#caracteristicas" className="hover:text-pastel-green transition-colors">Características</a>
@@ -42,7 +40,6 @@ const Navbar = () => {
        {/* Botones de Acción */}
         <div className="flex space-x-6 items-center">
           
-          {/* Botón de Iniciar Sesión convertido a Link */}
           <Link 
             to="/login"
             className="hidden md:block text-beige font-heading text-sm font-semibold hover:text-pastel-green transition-colors"
@@ -50,10 +47,10 @@ const Navbar = () => {
             Iniciar Sesión
           </Link>
           
-          {/* Botón de Prueba Gratis convertido a Link (Por ahora lo mandamos al login también) */}
+          {/* 🟢 ACTUALIZADO: Ahora manda a /registro 🟢 */}
           <Link 
-            to="/login"
-            className="bg-beige text-moss font-heading font-bold text-sm px-6 py-2.5 rounded-full hover:bg-beige-dark transition-all shadow-md transform hover:scale-105"
+            to="/registro"
+            className="bg-beige text-moss font-heading font-bold text-sm px-6 py-2.5 rounded-full hover:bg-beige-dark transition-all duration-[800ms] shadow-md transform hover:scale-105"
           >
             Prueba Gratis
           </Link>

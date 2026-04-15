@@ -406,6 +406,55 @@ app.put('/api/cliente/:id/suscripcion', async (req, res) => {
   }
 });
 
+// ==========================================
+// RUTA: REGISTRO PÚBLICO DE CLIENTES (ESTILO ODOO)
+// ==========================================
+app.post('/api/registro', async (req, res) => {
+  // 1. Recibimos los 5 datos separados
+  const { nombres, apellido_p, apellido_m, correo, pass } = req.body;
+
+  try {
+    const validacion = await pool.query('SELECT id_usuario FROM usuario WHERE correo = $1', [correo]);
+    if (validacion.rows.length > 0) {
+      return res.status(400).json({ mensaje: 'Este correo ya está registrado.' });
+    }
+
+    // 2. Insertamos con nombres y apellidos en sus columnas correspondientes
+    const consultaUsuario = `
+      INSERT INTO usuario (nombres, apellido_p, apellido_m, correo, pass, rol) 
+      VALUES ($1, $2, $3, $4, $5, 'Cliente') RETURNING id_usuario;
+    `;
+    const resultadoUsuario = await pool.query(consultaUsuario, [nombres, apellido_p, apellido_m, correo, pass]);
+    const nuevoId = resultadoUsuario.rows[0].id_usuario;
+
+    // 3. Lo vinculamos como Cliente
+    const consultaCliente = `INSERT INTO cliente (id_usuario) VALUES ($1)`;
+    await pool.query(consultaCliente, [nuevoId]);
+    
+    res.status(201).json({ mensaje: 'Cuenta creada exitosamente.' });
+  } catch (error) {
+    console.error('Error FATAL en el registro:', error);
+    res.status(500).json({ mensaje: 'Error al intentar crear tu cuenta' });
+  }
+});
+
+// ==========================================
+// RUTA: REPORTE DE ERRORES (SOPORTE INTERNO)
+// ==========================================
+app.post('/api/soporte/reportar', async (req, res) => {
+  const { id_usuario, tipo, descripcion } = req.body;
+
+  try {
+    // Por ahora, simularemos el envío y lo registraremos en la consola
+    console.log(`[BUG REPORT] Usuario ID: ${id_usuario} | Tipo: ${tipo} | Desc: ${descripcion}`);
+    
+    // Aquí podrías insertar en una tabla 'reporte_bugs' en el futuro
+    res.status(200).json({ mensaje: 'Reporte enviado al equipo de desarrollo de STS.' });
+  } catch (error) {
+    console.error('Error al procesar el reporte de soporte:', error);
+    res.status(500).json({ mensaje: 'Error al enviar el reporte.' });
+  }
+});
 
 // Encender el servidor
 app.listen(port, () => {

@@ -63,7 +63,7 @@ const Pricing = ({onSelectPlan}) => {
           {plans.map((plan, index) => (
             <div 
               key={index} 
-              className={`rounded-2xl p-8 shadow-lg transition-transform duration-300 relative ${
+              className={`rounded-2xl p-8 shadow-lg transition-transform duration-[800ms] relative ${
                 plan.isPopular 
                   ? 'bg-moss text-beige transform md:-translate-y-4 border-2 border-pastel-green' 
                   : 'bg-white text-moss border border-beige-dark hover:-translate-y-2'

@@ -7,6 +7,8 @@ import MisTickets from './pages/dashboard/MisTickets';
 import HistorialTecnico from './pages/dashboard/HistorialTecnico';
 import GestionPersonal from './pages/dashboard/GestionPersonal';
 import HistorialCliente from './pages/dashboard/HistorialCliente';
+import Registro from './pages/Registro';
+import Configuracion from './pages/dashboard/Configuracion';
 // (Asegúrate de tener también importado MisTickets si ya lo pusiste en las rutas)
 // Un componente temporal muy sencillo para nuestro Dashboard
 
@@ -18,7 +20,9 @@ function App() {
         <Route path="/" element={<Home />} />
         {/* Ruta pública: El Formulario de Login */}
         <Route path="/login" element={<Login />} />
-        
+
+        <Route path="/registro" element={<Registro />} />
+
         <Route path="/dashboard" element={<DashboardLayout />}>
           {/* Este es el componente que se muestra por defecto en el <Outlet /> */}
           <Route index element={<TecnicoDashboard />} /> 
@@ -31,8 +35,8 @@ function App() {
           {/* ESTE MUESTRA EL HISTORIAL COMPLETO PARA CLIENTES */}
           <Route path="historial-cliente" element={<HistorialCliente />} />
           
+          <Route path="configuracion" element={<Configuracion />} />
         </Route>
-
       </Routes>
     </Router>
   );

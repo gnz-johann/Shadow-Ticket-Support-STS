@@ -2,7 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Le decimos al cuerpo de la página que use nuestro color beige y fuente Nunito por defecto */
+/* Solo dejamos el scroll suave para la Landing Page */
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   @apply bg-beige font-body text-moss;
 }
