@@ -1,21 +1,25 @@
 import pkg from 'pg';
 import dotenv from 'dotenv';
 
-dotenv.config(); // Lee el archivo .env
+dotenv.config(); 
 
 const { Pool } = pkg;
 
+// Configuración Híbrida
 const pool = new Pool({
-  user: process.env.DB_USER,
-  host: process.env.DB_HOST,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_NAME,
-  port: process.env.DB_PORT,
+  // Si existe DATABASE_URL (en Render), la usa. Si no, usa las variables locales del .env
+  connectionString: process.env.DATABASE_URL || undefined,
+  user: process.env.DATABASE_URL ? undefined : process.env.DB_USER,
+  host: process.env.DATABASE_URL ? undefined : process.env.DB_HOST,
+  password: process.env.DATABASE_URL ? undefined : process.env.DB_PASSWORD,
+  database: process.env.DATABASE_URL ? undefined : process.env.DB_NAME,
+  port: process.env.DATABASE_URL ? undefined : process.env.DB_PORT,
+  // CRITICO: SSL es obligatorio para conectar con Render desde afuera
+  ssl: process.env.DATABASE_URL ? { rejectUnauthorized: false } : false
 });
 
-// Prueba de conexión rápida al arrancar
 pool.connect()
-  .then(() => console.log('🟢 Bóveda Conectada: shadow-ticket-support'))
+  .then(() => console.log('🟢 Bóveda Conectada: STS (Entorno detectado correctamente)'))
   .catch((err) => console.error('🔴 Error de conexión a la BD', err));
 
 export default pool;
